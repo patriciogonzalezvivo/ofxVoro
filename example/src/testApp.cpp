@@ -7,12 +7,13 @@ using namespace voro;
 void testApp::setup(){
     ofEnableAlphaBlending();
     ofSetVerticalSync(true);
+    ofEnableSmoothing();
     
     light.setPosition(100,500, 100);
     cam.setAutoDistance(true);
     
     size = 400;
-    nBoids = 20;
+    nBoids = 10;
     
     space.xLeft = -size;
     space.xRight = size;
@@ -55,54 +56,42 @@ void testApp::update(){
     }
     
     cellMeshes.clear();
-    voro::c_loop_all vl( con );
-    int i = 0;
-	if( vl.start() ){
-        
-        do {
-            voro::voronoicell c;
-            if( !con.compute_cell(c, vl) ) {
-                return 0;
-            } else {
-                double *pp = con.p[vl.ijk] + con.ps * vl.q;
-                ofMesh cellMesh = getCellMesh(c, ofPoint(pp[0],pp[1],pp[2]));
-                cellMeshes.push_back( cellMesh );
-                i++;
-            }
-            
-        } while( vl.inc() );
-    }
+    cellMeshes = getCellsFromContainer(con);
+    
+    ofSetWindowTitle(ofToString(ofGetFrameRate()));
 }
 
 //--------------------------------------------------------------
 void testApp::draw(){
     ofBackground(0);
+    ofBackgroundGradient(ofColor::gray, ofColor::black);
     
     ofPushMatrix();
     cam.begin();
     light.enable();
     ofEnableLighting();
     glEnable(GL_DEPTH_TEST);
-    glEnable(GL_SMOOTH);
+//    glEnable(GL_SMOOTH);
     
     ofSetColor(255,0,0);
     for (int i = 0; i < nBoids; i++)
 		boids[i].draw();
     
-    ofPushStyle();
-    ofSetColor(0,255,255);
-    ofSetLineWidth(3);
-    for(int i = 0; i < cellMeshes.size(); i++){
-        if (!ofGetKeyPressed()){
-            cellMeshes[i].drawWireframe();
-        } else {
-            cellMeshes[i].drawFaces();
-        }
-        
-    }
-    ofPopStyle();
     
-    glDisable(GL_SMOOTH);
+    for(int i = 0; i < cellMeshes.size(); i++){
+        ofSetColor(0,200,200, 30);
+        cellMeshes[i].drawFaces();
+        
+        ofPushStyle();
+        
+        ofSetLineWidth(3);
+        ofSetColor(0,255,255);
+        cellMeshes[i].drawWireframe();
+        ofPopStyle();
+    }
+    
+    
+//    glDisable(GL_SMOOTH);
     glDisable(GL_DEPTH_TEST);
     ofDisableLighting();
     light.disable();

@@ -92,3 +92,28 @@ ofMesh getCellMesh(voro::voronoicell &_c, ofPoint _pos ){
     
     return ofMesh();
 };
+
+vector<ofMesh>  getCellsFromContainer(voro::container &_con){
+    
+    vector<ofMesh> cells;
+    
+    voro::c_loop_all vl( _con );
+    int i = 0;
+	if( vl.start() ){
+        
+        do {
+            voro::voronoicell c;
+            if( !_con.compute_cell(c, vl) ) {
+                return cells;
+            } else {
+                double *pp = _con.p[vl.ijk] + _con.ps * vl.q;
+                ofMesh cellMesh = getCellMesh(c, ofPoint(pp[0],pp[1],pp[2]));
+                cells.push_back( cellMesh );
+                i++;
+            }
+            
+        } while( vl.inc() );
+    }
+    
+    return cells;
+}

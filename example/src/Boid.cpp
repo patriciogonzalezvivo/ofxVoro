@@ -50,14 +50,15 @@ Boid::Boid() {
             ofRandom(0.1,-0.1));
 	acc.set(0,0,0);
     
-    neighborhoodRadius = 200;//ofRandom(90,150);//*sc;//100;
-	sc = ofRandom(2,5);//3;
-    maxspeed = ofRandom(0.5, 2); //4
-    maxforce = 0.04 * sc; //0.1
+    
+	sc = ofRandom(1,3);
+    maxspeed = ofRandom(0.25,0.75);
+    neighborhoodRadius = 70*sc;
+    maxforce = 0.1;
 	
 	selected	= false;
 	
-	wanderTheta = 0.0;
+	wanderTheta = 0.1;
 }
 //-------------------------------------------------------------- Movement
 void Boid::update(Boid * b) {
@@ -213,55 +214,36 @@ ofVec3f Boid::cohesion(Boid * b) {
     return steer;
 }
 //------------------------------------------------------ Render
+
+void addFace(ofMesh& mesh, ofVec3f a, ofVec3f b, ofVec3f c) {
+	ofVec3f normal = ((b - a).cross(c - a)).normalize();
+	mesh.addNormal(normal);
+	mesh.addVertex(a);
+	mesh.addNormal(normal);
+	mesh.addVertex(b);
+	mesh.addNormal(normal);
+	mesh.addVertex(c);
+}
+
 void Boid::draw() {
-	draw(255);
-}
-
-void Boid::draw(int value) {
-	
-	drawTriangle(color,value);
-}
-
-void Boid::drawTriangle(ofColor c, int alpha){
-	ofEnableAlphaBlending();	
-    ofFill();
-    ofPushMatrix();
+    
+    ofMesh mesh;
+    mesh.setMode(OF_PRIMITIVE_TRIANGLES);
+    
+    addFace(mesh, ofVec3f(3*sc,0,0), ofVec3f(-3*sc,2*sc,0), ofVec3f(-3*sc,-2*sc,0));
+    addFace(mesh, ofVec3f(3*sc,0,0), ofVec3f(-3*sc,2*sc,0), ofVec3f(-3*sc,0,2*sc));
+    addFace(mesh, ofVec3f(3*sc,0,0), ofVec3f(-3*sc,0,2*sc), ofVec3f(-3*sc,-2*sc,0));
+    addFace(mesh, ofVec3f(-3*sc,0,2*sc), ofVec3f(-3*sc,2*sc,0), ofVec3f(-3*sc,-2*sc,0));
+	ofPushMatrix();
 	ofTranslate(loc.x, loc.y, loc.z);
 	ofRotateY(ofRadToDeg(atan2(-vel.z,vel.x)));
-	ofRotateZ(ofRadToDeg(asin(vel.y/vel.length())));	
-	
-	
-	ofSetColor(c,alpha);
-	glBegin(GL_TRIANGLES);
-	glVertex3f(3*sc,0,0);
-	glVertex3f(-3*sc,2*sc,0);
-	glVertex3f(-3*sc,-2*sc,0);
-	glEnd();
-	
-	ofSetColor(c.r-40,c.g-40,c.b-40,alpha);
-	glBegin(GL_TRIANGLES);
-	glVertex3f(3*sc,0,0);
-	glVertex3f(-3*sc,2*sc,0);
-	glVertex3f(-3*sc,0,2*sc);
-	glEnd();
+	ofRotateZ(ofRadToDeg(asin(vel.y/vel.length())));
     
-	ofSetColor(c.r+20,c.g+20,c.b+20,alpha);
-	glBegin(GL_TRIANGLES);
-	glVertex3f(3*sc,0,0);
-	glVertex3f(-3*sc,0,2*sc);
-	glVertex3f(-3*sc,-2*sc,0);
-	glEnd();
-	
-	ofSetColor(c.r-35,c.g-35,c.b-35,alpha);
-	glBegin(GL_TRIANGLES);
-	glVertex3f(-3*sc,0,2*sc);
-	glVertex3f(-3*sc,2*sc,0);
-	glVertex3f(-3*sc,-2*sc,0);
-	glEnd();
-	
+    mesh.drawFaces();
+    
     ofPopMatrix();
-	ofDisableAlphaBlending();
 }
+
 //-------------------------------------------------------- Asking
 bool Boid::isOver(int x, int y){
 	GLdouble _x = 0;

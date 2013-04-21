@@ -52,7 +52,6 @@ public:
 	void	setNBoids(int * n){ nBoids = n;};
 	void	setSpace(Space * s){ space = s;};
 	
-	void	update(Boid * _b);
 	void	flock(Boid * _b);
     
 	void	wander();
@@ -69,9 +68,8 @@ public:
 	void	seek(ofVec3f target) { acc += steer(target,false); }
 	void	arrive(ofVec3f target) { acc += steer(target,true); };
     
+    void	update(Boid * _b);
 	void	draw();
-	void	draw(int alpha);
-	void	drawTriangle(ofColor c, int alpha);
     
 	bool	isOver(int x, int y);
 	bool	isOver(ofVec2f _pos){isOver(_pos.x,_pos.y);};
