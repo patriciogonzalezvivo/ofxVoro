@@ -36,9 +36,9 @@ Boid::Boid() {
 	//Set the variable in case the flock don´t set them
 	space = new Space();
 	space->xLeft = 0;
-	space->xRight = ofGetWidth();
+	space->xRight = ofGetScreenWidth();
 	space->yTop = 0;
-	space->yBottom = ofGetHeight();
+	space->yBottom = ofGetScreenHeight();
 	space->zFront = 0;
 	space->zBack = 1000;
 	

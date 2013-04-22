@@ -12,7 +12,7 @@ void testApp::setup(){
     light.setPosition(100,500, 100);
     cam.setAutoDistance(true);
     
-    size = 400;
+    int size = 400;
     nBoids = 10;
     
     space.xLeft = -size;
@@ -21,6 +21,14 @@ void testApp::setup(){
     space.yBottom = size;
     space.zFront = -size;
     space.zBack = size;
+    
+    int voroSize = 100;
+    voroSpace.xLeft = -voroSize;
+    voroSpace.xRight = voroSize;
+    voroSpace.yTop = -voroSize;
+    voroSpace.yBottom = voroSize;
+    voroSpace.zFront = -voroSize;
+    voroSpace.zBack = voroSize;
     
     boids = new (nothrow) Boid[nBoids];
     
@@ -33,7 +41,7 @@ void testApp::setup(){
                          ofRandom(space.zFront,space.zBack));
     }
     
-    size = 100;
+    
     
 }
 
@@ -42,17 +50,22 @@ void testApp::update(){
     for (int i = 0; i < nBoids; i++)
 		boids[i].update(boids);
     
-    container con(-size,size,
-                  -size,size,
-                  -size,size,
-                  6,6,6,
-                  false,false,false,
+    bool press = ofGetKeyPressed();
+    
+    container con(voroSpace.xLeft,voroSpace.xRight,
+                  voroSpace.yTop,voroSpace.yBottom,
+                  voroSpace.zFront,voroSpace.zBack,
+                  1,1,1,
+                  press,press,press,
                   8);
     
     for(int i = 0; i < nBoids;i++){
-        con.put(i,  boids[i].loc.x,
-                    boids[i].loc.y,
-                    boids[i].loc.z);
+        
+        if ( voroSpace.inside(boids[i].loc)){
+            con.put(i,  boids[i].loc.x,
+                        boids[i].loc.y,
+                        boids[i].loc.z);
+        }
     }
     
     cellMeshes.clear();
@@ -64,18 +77,26 @@ void testApp::update(){
 //--------------------------------------------------------------
 void testApp::draw(){
     ofBackground(0);
-    ofBackgroundGradient(ofColor::gray, ofColor::black);
     
     ofPushMatrix();
     cam.begin();
     light.enable();
     ofEnableLighting();
     glEnable(GL_DEPTH_TEST);
-//    glEnable(GL_SMOOTH);
     
-    ofSetColor(255,0,0);
-    for (int i = 0; i < nBoids; i++)
+    ofNoFill();
+    ofSetColor(150,255,255);
+    ofBox(200);
+    ofFill();
+
+    for (int i = 0; i < nBoids; i++){
+        if ( voroSpace.inside(boids[i].loc))
+            ofSetColor(50, 200,200);
+        else
+            ofSetColor(255,0,0);
+            
 		boids[i].draw();
+    }
     
     
     for(int i = 0; i < cellMeshes.size(); i++){
@@ -90,8 +111,6 @@ void testApp::draw(){
         ofPopStyle();
     }
     
-    
-//    glDisable(GL_SMOOTH);
     glDisable(GL_DEPTH_TEST);
     ofDisableLighting();
     light.disable();
@@ -101,7 +120,8 @@ void testApp::draw(){
 
 //--------------------------------------------------------------
 void testApp::keyPressed(int key){
-
+    if(key == 'f')
+        ofToggleFullscreen();
 }
 
 //--------------------------------------------------------------

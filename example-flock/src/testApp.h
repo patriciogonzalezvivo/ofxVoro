@@ -23,13 +23,13 @@ public:
     
     ofEasyCam   cam;
     ofLight     light;
-    ofMesh      mesh;
    
     Space       space;
+    Space       voroSpace;
+    
     Boid        *boids;
     
     vector<ofMesh>  cellMeshes;
     
     int nBoids;
-    int size;
 };

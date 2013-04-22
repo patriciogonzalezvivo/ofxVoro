@@ -43,6 +43,18 @@ typedef struct{
 	int	yBottom;
 	int	zFront;
 	int zBack;
+    
+    bool inside(ofPoint _pos){
+        if (( _pos.x > xLeft ) &&
+            ( _pos.x < xRight ) &&
+            ( _pos.y > yTop ) &&
+            ( _pos.y < yBottom ) &&
+            ( _pos.z > zFront ) &&
+            ( _pos.z < zBack))
+            return true;
+        else
+            return false;
+    }
 } Space;
 
 class Boid {

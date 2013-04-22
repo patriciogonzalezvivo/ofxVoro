@@ -117,3 +117,27 @@ vector<ofMesh>  getCellsFromContainer(voro::container &_con){
     
     return cells;
 }
+
+vector<float> getCellsRadius(voro::container &_con){
+    vector<float> radius;
+    
+    voro::c_loop_all vl( _con );
+    int i = 0;
+	if( vl.start() ){
+        
+        do {
+            voro::voronoicell c;
+            if( !_con.compute_cell(c, vl) ) {
+                return radius;
+            } else {
+                double *pp = _con.p[vl.ijk] + _con.ps * vl.q;
+                float rad = getCellRadius(c);
+                radius.push_back( rad );
+                i++;
+            }
+            
+        } while( vl.inc() );
+    }
+    
+    return radius;
+}

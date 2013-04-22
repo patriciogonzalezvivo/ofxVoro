@@ -1,5 +1,6 @@
 //
 //  ofxVoro.h
+//  Funtions for wrapping Voro++ library ( http://math.lbl.gov/voro++/ )
 //
 //  Created by Patricio Gonzalez Vivo on 4/17/13.
 //
@@ -20,3 +21,4 @@ ofMesh          getCellMesh(voro::voronoicell &_c, ofPoint _pos = ofPoint(0,0,0)
 //  container wrappers
 //
 vector<ofMesh>  getCellsFromContainer(voro::container &_con);
+vector<float>   getCellsRadius(voro::container &_con);
