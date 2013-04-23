@@ -67,7 +67,7 @@ class wall_list {
 		/** Adds a wall to the list.
 		 * \param[in] w a reference to the wall to add. */
 		inline void add_wall(wall &w) {add_wall(&w);}
-		void add_wall(wall_list &wl);
+		void add_wall(wall_list &wl); 
 		/** Determines whether a given position is inside all of the
 		 * walls on the list.
 		 * \param[in] (x,y,z) the position to test.

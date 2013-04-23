@@ -12,64 +12,42 @@ void testApp::setup(){
     light.setPosition(100,500, 100);
     cam.setAutoDistance(true);
     
-    int size = 400;
-    nBoids = 50;
+    size = 100;
+    int nCells = 50;
     
-    space.xLeft = -size;
-    space.xRight = size;
-    space.yTop = -size;
-    space.yBottom = size;
-    space.zFront = -size;
-    space.zBack = size;
     
-    int voroSize = 100;
-    voroSpace.xLeft = -voroSize;
-    voroSpace.xRight = voroSize;
-    voroSpace.yTop = -voroSize;
-    voroSpace.yBottom = voroSize;
-    voroSpace.zFront = -voroSize;
-    voroSpace.zBack = voroSize;
-    
-    boids = new (nothrow) Boid[nBoids];
-    
-    for (int i = 0; i < nBoids; i++){
-        boids[i] = Boid();
-        boids[i].setNBoids(&nBoids);
-        boids[i].setSpace(&space);
-        boids[i].loc.set(ofRandom(space.xLeft, space.xRight),
-                         ofRandom(space.yTop, space.yBottom),
-                         ofRandom(space.zFront,space.zBack));
+    for(int i = 0; i < nCells;i++){
+        ofPoint newCell = ofPoint(ofRandom(-size,size),
+                                  ofRandom(-size,size),
+                                  ofRandom(-5,5));
+        
+        cellNucles.push_back(newCell);
     }
-    
-    
-    
+
+    con_periodic = false;
 }
 
 //--------------------------------------------------------------
 void testApp::update(){
-    for (int i = 0; i < nBoids; i++)
-		boids[i].update(boids);
+
+    cellMeshes.clear();
     
-    bool press = ofGetKeyPressed();
-    
-    container con(voroSpace.xLeft,voroSpace.xRight,
-                  voroSpace.yTop,voroSpace.yBottom,
-                  voroSpace.zFront,voroSpace.zBack,
-                  1,1,1,
-                  press,press,press,
+    container con(-size,size,
+                  -size,size,
+                  -10,10,
+                  10,10,1,
+                  con_periodic,con_periodic,con_periodic,
                   8);
     
-    for(int i = 0; i < nBoids;i++){
-        
-        if ( voroSpace.inside(boids[i].loc)){
-            con.put(i,  boids[i].loc.x,
-                        boids[i].loc.y,
-                        boids[i].loc.z);
-        }
+    wall_cylinder cyl(0,0,0,0,0,1,size);
+    con.add_wall(cyl);
+    
+    for(int i = 0; i < cellNucles.size(); i++){
+        con.put(i, cellNucles[i].x, cellNucles[i].y, cellNucles[i].z);
     }
     
-    cellMeshes.clear();
     cellMeshes = getCellsFromContainer(con);
+    cellRadius = getCellsRadius(con);
     
     ofSetWindowTitle(ofToString(ofGetFrameRate()));
 }
@@ -83,24 +61,15 @@ void testApp::draw(){
     light.enable();
     ofEnableLighting();
     glEnable(GL_DEPTH_TEST);
-    
-    ofNoFill();
-    ofSetColor(150,255,255);
-    ofBox(200);
-    ofFill();
-
-    for (int i = 0; i < nBoids; i++){
-        if ( voroSpace.inside(boids[i].loc))
-            ofSetColor(50, 200,200);
-        else
-            ofSetColor(255,0,0);
-            
-		boids[i].draw();
+   
+    for (int i = 0; i < cellNucles.size(); i++){
+        ofSetColor(255,0,0);
+		ofSphere(cellNucles[i], cellRadius[i]*0.2);
     }
     
     
     for(int i = 0; i < cellMeshes.size(); i++){
-        ofSetColor(0,200,200, 30);
+        ofSetColor(0,200,200,30);
         cellMeshes[i].drawFaces();
         
         ofPushStyle();
@@ -116,12 +85,17 @@ void testApp::draw(){
     light.disable();
     cam.end();
     ofPopMatrix();
+    
+    ofSetColor(255);
 }
 
 //--------------------------------------------------------------
 void testApp::keyPressed(int key){
-    if(key == 'f')
+    if ( key == ' '){
+        con_periodic = !con_periodic;
+    } else if ( key == 'f')
         ofToggleFullscreen();
+
 }
 
 //--------------------------------------------------------------
