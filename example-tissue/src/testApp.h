@@ -20,16 +20,12 @@ public:
     void dragEvent(ofDragInfo dragInfo);
     void gotMessage(ofMessage msg);
     
+    void makeTissue(int _nCells, int _width, int _height, int _deep);
+    
     ofEasyCam   cam;
     ofLight     light;
     
-    vector<ofMesh>  cellMeshes;
-    vector<ofPoint> cellNucles;
+    vector<ofPoint> cellCentroids;
     vector<float>   cellRadius;
-    
-    int con_nBlocks;    // Set up the number of blocks that the container is divided into
-    int con_init_mem;   // ??
-    bool con_periodic;
-    
-    int size;
+    vector<ofMesh>  cellMeshes;
 };

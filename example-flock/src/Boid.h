@@ -57,44 +57,38 @@ typedef struct{
     }
 } Space;
 
-class Boid {
+class Boid : public ofPoint {
 public:
 	Boid();
-	
-	void	setNBoids(int * n){ nBoids = n;};
-	void	setSpace(Space * s){ space = s;};
-	
-	void	flock(Boid * _b);
+	Boid(Space *_s);
     
-	void	wander();
-	void	move();
-	void	checkBounds();
+	void	setSpace(Space *_s){ space = _s;};
 	
+    void	update(vector<Boid*> &_b);
+    
 	ofVec3f	steer(ofVec3f target, bool slowdown);
 	ofVec3f	avoid(ofVec3f target, bool slowdown);
-	
-	ofVec3f	separate(Boid * b);
-	ofVec3f	align(Boid* b);
-	ofVec3f	cohesion(Boid * b);
-	
 	void	seek(ofVec3f target) { acc += steer(target,false); }
 	void	arrive(ofVec3f target) { acc += steer(target,true); };
     
-    void	update(Boid * _b);
-	void	draw();
-    
-	bool	isOver(int x, int y);
+    bool	isOver(int x, int y);
 	bool	isOver(ofVec2f _pos){isOver(_pos.x,_pos.y);};
     
-    ofVec3f	loc, vel, acc;
-	ofVec3f	ali, coh, sep;
+	void	draw();
+    
+    ofVec3f	vel, acc;
+	
 	float	neighborhoodRadius, wanderTheta, sc, maxforce, maxspeed;
 	bool	selected;
     
     ofColor color;
     
 private:
-    int*	nBoids;
+    void	flock(vector<Boid*> &_b);
+	void	wander();
+	void	move();
+	void	checkBounds();
+    
     Space*	space;
 };
 

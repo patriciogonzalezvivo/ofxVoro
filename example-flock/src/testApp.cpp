@@ -1,8 +1,5 @@
 #include "testApp.h"
 
-#include "voro++.hh"
-using namespace voro;
-
 //--------------------------------------------------------------
 void testApp::setup(){
     ofEnableAlphaBlending();
@@ -12,59 +9,31 @@ void testApp::setup(){
     light.setPosition(100,500, 100);
     cam.setAutoDistance(true);
     
-    int size = 400;
-    nBoids = 50;
+    containerSize = 100;
     
-    space.xLeft = -size;
-    space.xRight = size;
-    space.yTop = -size;
-    space.yBottom = size;
-    space.zFront = -size;
-    space.zBack = size;
-    
-    int voroSize = 100;
-    voroSpace.xLeft = -voroSize;
-    voroSpace.xRight = voroSize;
-    voroSpace.yTop = -voroSize;
-    voroSpace.yBottom = voroSize;
-    voroSpace.zFront = -voroSize;
-    voroSpace.zBack = voroSize;
-    
-    boids = new (nothrow) Boid[nBoids];
-    
+    int nBoids = 50;
     for (int i = 0; i < nBoids; i++){
-        boids[i] = Boid();
-        boids[i].setNBoids(&nBoids);
-        boids[i].setSpace(&space);
-        boids[i].loc.set(ofRandom(space.xLeft, space.xRight),
-                         ofRandom(space.yTop, space.yBottom),
-                         ofRandom(space.zFront,space.zBack));
+        Boid *newBoid = new Boid( );
+        boids.push_back(newBoid);
     }
-    
-    
-    
 }
 
 //--------------------------------------------------------------
 void testApp::update(){
-    for (int i = 0; i < nBoids; i++)
-		boids[i].update(boids);
-    
+
     bool press = ofGetKeyPressed();
+    container con(-containerSize,containerSize,
+                  -containerSize,containerSize,
+                  -containerSize,containerSize,
+                  1, 1, 1, press, press, press, 8);
     
-    container con(voroSpace.xLeft,voroSpace.xRight,
-                  voroSpace.yTop,voroSpace.yBottom,
-                  voroSpace.zFront,voroSpace.zBack,
-                  1,1,1,
-                  press,press,press,
-                  8);
-    
-    for(int i = 0; i < nBoids;i++){
-        
-        if ( voroSpace.inside(boids[i].loc)){
-            con.put(i,  boids[i].loc.x,
-                        boids[i].loc.y,
-                        boids[i].loc.z);
+    for(int i = 0; i < boids.size();i++){
+        boids[i]->update( boids );
+        if ( insideContainer( con, *boids[i])){
+            addCellSeed( con, boids[i], i);
+            boids[i]->color.set(50, 200,200);
+        } else {
+            boids[i]->color.set(255,0,0);
         }
     }
     
@@ -89,15 +58,9 @@ void testApp::draw(){
     ofBox(200);
     ofFill();
 
-    for (int i = 0; i < nBoids; i++){
-        if ( voroSpace.inside(boids[i].loc))
-            ofSetColor(50, 200,200);
-        else
-            ofSetColor(255,0,0);
-            
-		boids[i].draw();
+    for (int i = 0; i < boids.size(); i++){
+		boids[i]->draw();
     }
-    
     
     for(int i = 0; i < cellMeshes.size(); i++){
         ofSetColor(0,200,200, 30);

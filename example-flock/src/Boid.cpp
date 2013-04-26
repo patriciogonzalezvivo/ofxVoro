@@ -35,19 +35,22 @@
 Boid::Boid() {
 	//Set the variable in case the flock don´t set them
 	space = new Space();
-	space->xLeft = 0;
-	space->xRight = ofGetScreenWidth();
-	space->yTop = 0;
-	space->yBottom = ofGetScreenHeight();
-	space->zFront = 0;
-	space->zBack = 1000;
+	space->xLeft = -ofGetScreenWidth()*0.5;
+	space->xRight = ofGetScreenWidth()*0.5;
+	space->yTop = -ofGetScreenHeight()*0.5;
+	space->yBottom = ofGetScreenHeight()*0.5;
+	space->zFront = -500;
+	space->zBack = 500;
 	
     color.set(255,0,0);
-	
-    loc.set(500,500,500);
+    
+    set(ofRandom(space->xLeft, space->xRight),
+        ofRandom(space->yTop, space->yBottom),
+        ofRandom(space->zFront,space->zBack));
+    
 	vel.set(ofRandom(-0.1,0.1),
-            ofRandom(0.1,-0.1),
-            ofRandom(0.1,-0.1));
+            ofRandom(-0.1,0.1),
+            ofRandom(-0.1,0.1));
 	acc.set(0,0,0);
     
     
@@ -57,41 +60,106 @@ Boid::Boid() {
     maxforce = 0.1;
 	
 	selected	= false;
-	
 	wanderTheta = 0.1;
 }
+
+Boid::Boid(Space *_s) {
+	//Set the variable in case the flock don´t set them
+	space = _s;
+    set(ofRandom(space->xLeft, space->xRight),
+        ofRandom(space->yTop, space->yBottom),
+        ofRandom(space->zFront,space->zBack));
+
+    color.set(255,0,0);
+    
+	vel.set(ofRandom(-0.1,0.1),
+            ofRandom(-0.1,0.1),
+            ofRandom(-0.1,0.1));
+    
+	acc.set(0,0,0);
+    
+	sc = ofRandom(1,3);
+    maxspeed = ofRandom(0.25,0.75);
+    neighborhoodRadius = 70*sc;
+    maxforce = 0.1;
+	
+	selected	= false;
+	wanderTheta = 0.1;
+}
+
 //-------------------------------------------------------------- Movement
-void Boid::update(Boid * b) {
-	// Evitar las paredes
-	acc += 5 * avoid(ofVec3f(space->xLeft,loc.y,loc.z),true);
-	acc += 5 * avoid(ofVec3f(space->xRight,loc.y,loc.z),true);
-	acc += 5 * avoid(ofVec3f(loc.x,space->yTop,loc.z),true);
-	acc += 5 * avoid(ofVec3f(loc.x,space->yBottom,loc.z),true);
-	acc += 5 * avoid(ofVec3f(loc.x,loc.y,space->zFront),true);
-	acc += 5 * avoid(ofVec3f(loc.x,loc.y,space->zBack),true);
+void Boid::update(vector<Boid*> &_b) {	
+    //  SEPARATION
+    //
+    ofVec3f sep; 
+    
+    //  ALIGNMENT
+    //
+    ofVec3f ali;
+    int aliCount = 0;
+    
+    //  COHESION
+    //
+	ofVec3f coh;
+    ofVec3f posSum;
+    int cohCount = 0;
+    
+    for (int i = 0 ; i < _b.size() ; i++) {
+        
+		ofVec3f diff = *this - *_b[i];
+        float d = diff.length();
+        
+		if ( (d > 0) && (d <= neighborhoodRadius)) {
+            
+            //  add separation force
+            //
+            ofVec3f repulse = diff;
+			repulse.normalize();
+			repulse /= d;
+			sep += repulse;
+            
+            //  add align force
+            //
+            ali += _b[i]->vel;
+			aliCount++;
+            
+            //  add cohesion force
+            //
+            posSum += *_b[i]; // Add location
+			cohCount++;
+		}
+    
+    }
+    
+    //  Average of Align
+    //
+    if (aliCount > 0) {
+		ali /= (float)aliCount;
+		ali.limit(maxforce);
+    }
+    
+    //  Average of cohesion
+    //
+    if (cohCount > 0)
+		posSum /= (float)cohCount;
+	coh = posSum - *this;
+	coh.limit(0.04);
 	
-    flock(b);
-
-	move();
-	checkBounds();
-}
-
-void Boid::flock(Boid * b) {
-	sep = separate(b);
-	ali = align(b);
-	coh = cohesion(b);
-	
-	acc += ali * 1;
+    
+    //  Apply forces into acc
+    //
+	acc += ali * 3;
 	acc += coh * 3;
-	acc += sep * 6;	//1;
-}
- 
+	acc += sep * 3;//6;	//1;
 
-void Boid::move(){
+    //  Do the physics (acc -> vel -> pos)
+    //
 	vel += acc;
 	vel.limit(maxspeed);
-	loc += vel;
+	*this += vel;
     acc *= 0;
+    
+	checkBounds();
 }
 
 void Boid::wander(){
@@ -104,7 +172,7 @@ void Boid::wander(){
     ofVec3f circleloc = vel;			// Start with velocity
     circleloc.normalize();          // Normalize to get heading
     circleloc *= wanderD;			// Multiply by distance
-    circleloc += loc;				// Make it relative to boid's location
+    circleloc += *this;				// Make it relative to boid's location
     
     ofVec3f circleOffSet = ofVec3f(wanderR*cos(wanderTheta),0,wanderR*sin(wanderTheta));
     ofVec3f target = circleloc + circleOffSet;
@@ -112,23 +180,23 @@ void Boid::wander(){
 }
 
 void Boid::checkBounds(){
-    if (loc.x < space->xLeft) loc.x = space->xRight;
-	if (loc.x > space->xRight) loc.x = space->xLeft;
+    if ( x < space->xLeft) x = space->xRight;
+	if ( x > space->xRight) x = space->xLeft;
 	
-    if (loc.y < space->yTop) loc.y = space->yBottom;
-	if (loc.y > space->yBottom) loc.y = space->yTop;
+    if ( y < space->yTop) y = space->yBottom;
+	if ( y > space->yBottom) y = space->yTop;
 	
-	if (loc.z > space->zFront) space->zBack;
-	if (loc.z < space->zBack) space->zFront;
+	if ( z > space->zFront) space->zBack;
+	if ( z < space->zBack) space->zFront;
 }
 
 ofVec3f Boid::steer(ofVec3f target, bool arrival) {
     ofVec3f steer; 
 	if (!arrival){
-		steer = target -loc;
+		steer = target - *this;
 		steer.limit(maxforce);
 	} else {
-		ofVec3f targetOffset = target - loc; 
+		ofVec3f targetOffset = target - *this;
 		float distance = targetOffset.length();
 		float rampedSpeed = maxspeed*(distance/100);
 		float clippedSpeed = min(rampedSpeed, maxspeed);
@@ -139,7 +207,7 @@ ofVec3f Boid::steer(ofVec3f target, bool arrival) {
 }
 
 ofVec3f Boid::avoid(ofVec3f target, bool weight) {
-    ofVec3f steer = loc - target; 
+    ofVec3f steer = *this - target;
 	float d = steer.length();
 	
     if (weight)
@@ -148,71 +216,6 @@ ofVec3f Boid::avoid(ofVec3f target, bool weight) {
 	return steer;
 }
 
-ofVec3f Boid::separate(Boid * b) {
-    ofVec3f posSum = ofVec3f(0,0,0);
-	ofVec3f repulse;
-	
-    for (int i = 0 ; i < *nBoids ; i++) {
-		Boid other = b[i];
-		
-		ofVec3f repulse = loc - other.loc;
-		float d = repulse.length();
-		
-		if ((d > 0) && (d <= neighborhoodRadius)) {
-			repulse.normalize();
-			repulse /= d;
-			posSum += repulse;
-		}
-    }
-	return posSum;
-}
-
-ofVec3f Boid::align(Boid * b) {
-    ofVec3f velSum = ofVec3f(0,0,0); 
-    int count = 0;
-    for (int i = 0 ; i < *nBoids; i++) {
-		Boid other = b[i];
-		
-		ofVec3f diff = loc - other.loc;
-		float d = diff.length();
-		
-		if ((d > 0) && (d <= neighborhoodRadius)) {
-			velSum += other.vel;
-			count++;
-		}
-    }
-	
-    if (count > 0) {
-		velSum /= (float)count;
-		velSum.limit(maxforce);
-    }
-	
-	return velSum;
-}
-
-ofVec3f Boid::cohesion(Boid * b) {
-	ofVec3f posSum = ofVec3f(0,0,0); 
-	ofVec3f steer = ofVec3f(0,0,0);
-    int count = 0;
-	
-    for (int i = 0 ; i < *nBoids ; i++) {
-		Boid other = b[i];
-		
-		ofVec3f diff = loc - other.loc;
-		float d = diff.length();
-		
-		if ((d > 0) && (d <= neighborhoodRadius)) {
-			posSum += other.loc; // Add location
-			count++;
-		}
-    }
-    if (count > 0)
-		posSum /= (float)count;
-	steer = posSum - loc;
-	steer.limit(0.04);
-	
-    return steer;
-}
 //------------------------------------------------------ Render
 
 void addFace(ofMesh& mesh, ofVec3f a, ofVec3f b, ofVec3f c) {
@@ -227,6 +230,10 @@ void addFace(ofMesh& mesh, ofVec3f a, ofVec3f b, ofVec3f c) {
 
 void Boid::draw() {
     
+    ofPushStyle();
+    
+    ofSetColor(color);
+    
     ofMesh mesh;
     mesh.setMode(OF_PRIMITIVE_TRIANGLES);
     
@@ -235,13 +242,14 @@ void Boid::draw() {
     addFace(mesh, ofVec3f(3*sc,0,0), ofVec3f(-3*sc,0,2*sc), ofVec3f(-3*sc,-2*sc,0));
     addFace(mesh, ofVec3f(-3*sc,0,2*sc), ofVec3f(-3*sc,2*sc,0), ofVec3f(-3*sc,-2*sc,0));
 	ofPushMatrix();
-	ofTranslate(loc.x, loc.y, loc.z);
+	ofTranslate(*this);
 	ofRotateY(ofRadToDeg(atan2(-vel.z,vel.x)));
 	ofRotateZ(ofRadToDeg(asin(vel.y/vel.length())));
     
     mesh.drawFaces();
     
     ofPopMatrix();
+    ofPopStyle();
 }
 
 //-------------------------------------------------------- Asking
@@ -259,13 +267,13 @@ bool Boid::isOver(int x, int y){
 	glGetDoublev(GL_MODELVIEW_MATRIX, mvmatrix);
 	glGetDoublev(GL_PROJECTION_MATRIX, projmatrix);
 	
-	gluProject(loc.x, loc.y, loc.z,
+	gluProject(x, y, z,
 			   mvmatrix, projmatrix, viewport,
 			   &_x, &_y, &_z);
 	
 	_y = ofGetHeight() - _y;
 	
-	if ( ofDist(x,y,_x,_y) <= sc * ofMap(loc.z,0,-5000,9,1) ) selected = true;
+	if ( ofDist(x,y,_x,_y) <= sc * ofMap(z,0,-5000,9,1) ) selected = true;
 	else selected = false;
 	
 	return selected; 

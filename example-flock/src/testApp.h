@@ -21,15 +21,10 @@ public:
     void dragEvent(ofDragInfo dragInfo);
     void gotMessage(ofMessage msg);
     
-    ofEasyCam   cam;
-    ofLight     light;
-   
-    Space       space;
-    Space       voroSpace;
+    ofEasyCam       cam;
+    ofLight         light;
     
-    Boid        *boids;
-    
+    vector<Boid*>   boids;
     vector<ofMesh>  cellMeshes;
-    
-    int nBoids;
+    int             containerSize;
 };

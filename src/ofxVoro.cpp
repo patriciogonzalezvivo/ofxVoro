@@ -141,3 +141,89 @@ vector<float> getCellsRadius(voro::container &_con){
     
     return radius;
 }
+
+vector<ofPoint> getCellsPositions(voro::container &_con){
+    vector<ofPoint> positions;
+    
+    voro::c_loop_all vl( _con );
+    int i = 0;
+	if( vl.start() ){
+
+        do {
+            voro::voronoicell c;
+            if( !_con.compute_cell(c, vl) ) {
+                return positions;
+            } else {
+                double *pp = _con.p[vl.ijk] + _con.ps * vl.q;
+                positions.push_back(ofPoint(pp[0],pp[1],pp[2]));
+                i++;
+            }
+            
+        } while( vl.inc() );
+    }
+    
+    return positions;
+}
+
+vector<ofPoint> getCellsCentroids(voro::container &_con){
+    vector<ofPoint> centroids;
+    
+    voro::c_loop_all vl( _con );
+    int i = 0;
+	if( vl.start() ){
+        
+        do {
+            voro::voronoicell c;
+            if( !_con.compute_cell(c, vl) ) {
+                return centroids;
+            } else {
+                double *pp = _con.p[vl.ijk] + _con.ps * vl.q;
+                centroids.push_back( getCellCentroid(c) + ofPoint(pp[0],pp[1],pp[2]) );
+                i++;
+            }
+            
+        } while( vl.inc() );
+    }
+    
+    return centroids;
+}
+
+bool insideContainer(voro::container &_con, ofPoint _pos){
+    return _con.point_inside(_pos.x, _pos.y, _pos.z);
+}
+
+void addCellSeed(voro::container &_con, ofPoint &_pnt, int _i, bool _checkInside){
+    if (_checkInside){
+        if ( insideContainer(_con, _pnt ))
+            _con.put(_i, _pnt.x, _pnt.y, _pnt.z);
+    } else {
+        _con.put(_i, _pnt.x, _pnt.y, _pnt.z);
+    }
+}
+
+void addCellSeed(voro::container &_con, ofPoint *_pnt, int _i, bool _checkInside){
+    if (_checkInside){
+        if ( insideContainer(_con, *_pnt));
+        _con.put(_i, _pnt->x, _pnt->y, _pnt->z);
+    } else {
+        _con.put(_i, _pnt->x, _pnt->y, _pnt->z);
+    }
+}
+
+void addCellsSeeds(voro::container &_con, vector<ofPoint> &_pnts, bool _checkInside){
+    for (int i = 0; i < _pnts.size(); i++) {
+        addCellSeed(_con, _pnts[i], i, _checkInside);
+    }
+}
+
+void addCellsSeeds(voro::container &_con, vector<ofPoint*> &_pnts, bool _checkInside){
+    for (int i = 0; i < _pnts.size(); i++) {
+        addCellSeed(_con, _pnts[i], i, _checkInside);
+    }
+}
+
+void addCellsSeeds(voro::container &_con, ofPoint *_pnts, int _nSize, bool _checkInside){
+    for (int i = 0; i < _nSize; i++) {
+        addCellSeed(_con, _pnts[i], i, _checkInside);
+    }
+}
