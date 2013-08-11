@@ -22,7 +22,7 @@ void testApp::setup(){
 void testApp::update(){
 
     bool press = ofGetKeyPressed();
-    container con(-containerSize,containerSize,
+    voro::container con(-containerSize,containerSize,
                   -containerSize,containerSize,
                   -containerSize,containerSize,
                   1, 1, 1, press, press, press, 8);
