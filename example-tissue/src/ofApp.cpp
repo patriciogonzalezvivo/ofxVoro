@@ -1,4 +1,4 @@
-#include "testApp.h"
+#include "ofApp.h"
 
 //--------------------------------------------------------------
 void testApp::setup(){
@@ -9,37 +9,55 @@ void testApp::setup(){
     light.setPosition(100,500, 100);
     cam.setAutoDistance(true);
     
-    containerSize = 100;
+    makeTissue(50, ofGetHeight()*0.8, ofGetHeight()*0.8, 20);
+}
+
+void testApp::makeTissue(int _nCells, int _width, int _height, int _deep){
     
-    int nBoids = 50;
-    for (int i = 0; i < nBoids; i++){
-        Boid *newBoid = new Boid( );
-        boids.push_back(newBoid);
+    //  Fresh begining
+    //
+    cellMeshes.clear();
+    cellCentroids.clear();
+    cellRadius.clear();
+    
+    //  Define a container
+    //
+    voro::container con(-_width*0.5,_width*0.5,
+                        -_height*0.5,_height*0.5,
+                        -_deep*0.5,_deep*0.5,
+                        1,1,1,
+                        true,true,true,
+                        8);
+    
+    //  Add walls (un comment one pair if you like to shape the container)
+    //
+    voro::wall_cylinder cyl(0,0,0,0,0,20, min(_width*0.5, _height*0.5));
+    con.add_wall(cyl);
+    
+//    voro::wall_sphere sph(0, 0, 0, min(_width*0.5, _height*0.5) );
+//    con.add_wall(sph);
+    
+//    voro::wall_cone cone(0,0,min(_width*0.5, _height*0.5),0,0,-1,atan(0.5));
+//    con.add_wall(cone);
+    
+    //  Add the cell seed to the container
+    //
+    for(int i = 0; i < _nCells;i++){
+        ofPoint newCell = ofPoint(ofRandom(-_width*0.5,_width*0.5),
+                                  ofRandom(-_height*0.5,_height*0.5),
+                                  ofRandom(-_deep*0.25,_deep*0.25));
+    
+        addCellSeed(con, newCell, i, true);
     }
+    
+    cellMeshes = getCellsFromContainer(con);
+    cellRadius = getCellsRadius(con);
+    cellCentroids = getCellsCentroids(con);
 }
 
 //--------------------------------------------------------------
 void testApp::update(){
 
-    bool press = ofGetKeyPressed();
-    voro::container con(-containerSize,containerSize,
-                  -containerSize,containerSize,
-                  -containerSize,containerSize,
-                  1, 1, 1, press, press, press, 8);
-    
-    for(int i = 0; i < boids.size();i++){
-        boids[i]->update( boids );
-        if ( insideContainer( con, *boids[i])){
-            addCellSeed( con, boids[i], i);
-            boids[i]->color.set(50, 200,200);
-        } else {
-            boids[i]->color.set(255,0,0);
-        }
-    }
-    
-    cellMeshes.clear();
-    cellMeshes = getCellsFromContainer(con);
-    
     ofSetWindowTitle(ofToString(ofGetFrameRate()));
 }
 
@@ -53,21 +71,16 @@ void testApp::draw(){
     ofEnableLighting();
     glEnable(GL_DEPTH_TEST);
     
-    ofNoFill();
-    ofSetColor(150,255,255);
-    ofBox(200);
-    ofFill();
-
-    for (int i = 0; i < boids.size(); i++){
-		boids[i]->draw();
+    for (int i = 0; i < cellCentroids.size(); i++){
+        ofSetColor(255,0,0);
+		ofSphere(cellCentroids[i], cellRadius[i]*0.15);
     }
     
     for(int i = 0; i < cellMeshes.size(); i++){
-        ofSetColor(0,200,200, 30);
+        ofSetColor(0,200,200,30);
         cellMeshes[i].drawFaces();
         
         ofPushStyle();
-        
         ofSetLineWidth(3);
         ofSetColor(0,255,255);
         cellMeshes[i].drawWireframe();
@@ -83,8 +96,11 @@ void testApp::draw(){
 
 //--------------------------------------------------------------
 void testApp::keyPressed(int key){
-    if(key == 'f')
+    if ( key == 'f'){
         ofToggleFullscreen();
+    } else {
+        makeTissue(50, ofGetWidth()*0.8, ofGetHeight()*0.8,20);
+    }
 }
 
 //--------------------------------------------------------------
@@ -114,7 +130,6 @@ void testApp::mouseReleased(int x, int y, int button){
 
 //--------------------------------------------------------------
 void testApp::windowResized(int w, int h){
-
 }
 
 //--------------------------------------------------------------
