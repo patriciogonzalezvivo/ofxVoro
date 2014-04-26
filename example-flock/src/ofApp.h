@@ -25,6 +25,6 @@ public:
     ofLight         light;
     
     vector<Boid*>   boids;
-    vector<ofMesh>  cellMeshes;
+    vector<ofVboMesh>  cellMeshes;
     int             containerSize;
 };

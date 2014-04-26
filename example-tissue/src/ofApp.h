@@ -27,5 +27,5 @@ public:
     
     vector<ofPoint> cellCentroids;
     vector<float>   cellRadius;
-    vector<ofMesh>  cellMeshes;
+    vector<ofVboMesh>  cellMeshes;
 };

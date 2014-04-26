@@ -38,7 +38,7 @@ void testApp::update(){
     }
     
     cellMeshes.clear();
-    cellMeshes = getCellsFromContainer(con);
+    cellMeshes = getCellsFromContainer(con,0);
     
     ofSetWindowTitle(ofToString(ofGetFrameRate()));
 }

@@ -50,7 +50,7 @@ void testApp::makeTissue(int _nCells, int _width, int _height, int _deep){
         addCellSeed(con, newCell, i, true);
     }
     
-    cellMeshes = getCellsFromContainer(con);
+    cellMeshes = getCellsFromContainer(con,0.0);
     cellRadius = getCellsRadius(con);
     cellCentroids = getCellsCentroids(con);
 }
@@ -63,7 +63,7 @@ void testApp::update(){
 
 //--------------------------------------------------------------
 void testApp::draw(){
-    ofBackground(0);
+    ofBackground(255);
     
     ofPushMatrix();
     cam.begin();
@@ -72,17 +72,17 @@ void testApp::draw(){
     glEnable(GL_DEPTH_TEST);
     
     for (int i = 0; i < cellCentroids.size(); i++){
-        ofSetColor(255,0,0);
+        ofSetColor(0);
 		ofSphere(cellCentroids[i], cellRadius[i]*0.15);
     }
     
     for(int i = 0; i < cellMeshes.size(); i++){
-        ofSetColor(0,200,200,30);
+        ofSetColor(100,30);
         cellMeshes[i].drawFaces();
         
         ofPushStyle();
         ofSetLineWidth(3);
-        ofSetColor(0,255,255);
+        ofSetColor(100);
         cellMeshes[i].drawWireframe();
         ofPopStyle();
     }
