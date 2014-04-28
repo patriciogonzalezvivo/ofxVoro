@@ -10,4 +10,6 @@ cd openFrameworks/addons
 git clone https://github.com/patriciogonzalezvivo/ofxVoro
 
 <iframe src="http://player.vimeo.com/video/64697511" width="575" height="323" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+
+<iframe src="http://player.vimeo.com/video/64520422" width="575" height="323" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
 		
