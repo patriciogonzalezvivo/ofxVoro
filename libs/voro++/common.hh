@@ -14,7 +14,7 @@
 #include <cstdlib>
 #include <vector>
 
-#include "config.h"
+#include "config.hh"
 
 namespace voro {
 

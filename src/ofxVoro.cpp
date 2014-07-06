@@ -34,37 +34,27 @@ vector<ofPoint> getCellVerteces(voro::voronoicell &_c, ofPoint _pos ){
 ofVboMesh getCellMesh(voro::voronoicell &_c, ofPoint _pos ){
     if( _c.p ) {
         
-        ofPoint centroid = getCellCentroid(_c,_pos);
-        
-        int i,j,k,l,m,n;
-        
-        //  Vertex
+        //  Extract Verteces
         //
         double *ptsp=_c.pts;
         vector<ofPoint> vertices;
-        vector<ofPoint> normals;
-        for(i = 0; i < _c.p; i++, ptsp+=3){
+        for(int i = 0; i < _c.p; i++, ptsp+=3){
             ofPoint newPoint;
             newPoint.x = _pos.x + ptsp[0]*0.5;
             newPoint.y = _pos.y + ptsp[1]*0.5;
             newPoint.z = _pos.z + ptsp[2]*0.5;
             vertices.push_back(newPoint);
-            
-            ofPoint newNormal;
-            newNormal = newPoint - _pos;//centroid ;
-            newNormal = newNormal.normalize();
-            normals.push_back(newNormal);
         }
         
-        ofVboMesh mesh;
-        mesh.setMode(OF_PRIMITIVE_TRIANGLES );
-        mesh.addVertices(vertices);
-        mesh.addNormals(normals);
+        ofVboMesh tmp;
+        tmp.setMode(OF_PRIMITIVE_TRIANGLES );
+        tmp.addVertices(vertices);
         
-        //  Index
+        //  Add triangles using Indeces
         //
-        for(i = 1; i < _c.p; i++){
-            for(j = 0; j < _c.nu[i]; j++) {
+        int k,l,m,n;
+        for(int i = 1; i < _c.p; i++){
+            for(int j = 0; j < _c.nu[i]; j++) {
                 
                 k = _c.ed[i][j];
                 
@@ -76,7 +66,7 @@ ofVboMesh getCellMesh(voro::voronoicell &_c, ofPoint _pos ){
                     
                     while(m!=i) {
                         n = _c.cycle_up( _c.ed[k][ _c.nu[k]+l],m);
-                        mesh.addTriangle(i, k, m);
+                        tmp.addTriangle(i, k, m);
                         
                         k=m;
                         l=n;
@@ -87,9 +77,29 @@ ofVboMesh getCellMesh(voro::voronoicell &_c, ofPoint _pos ){
             }
         }
         
+        //  Calculate Normals
+        //
+        ofVboMesh mesh;
+        mesh.setMode(OF_PRIMITIVE_TRIANGLES);
+        vector<ofMeshFace> faces = tmp.getUniqueFaces();
+        for (int i = 0; i < faces.size(); i++) {
+            ofMeshFace face = faces[i];
+            ofPoint a = face.getVertex(0);
+            ofPoint b = face.getVertex(1);
+            ofPoint c = face.getVertex(2);
+            
+            ofPoint normal = ((b - a).cross(c - a)).normalize();
+            
+            mesh.addVertex(a);
+            mesh.addNormal(normal);
+            
+            mesh.addVertex(b);
+            mesh.addNormal(normal);
+            mesh.addVertex(c);
+            mesh.addNormal(normal);
+        }
         return mesh;
     }
-    
     return ofVboMesh();
 };
 
@@ -97,40 +107,30 @@ void getCellMesh(voro::voronoicell &_c, ofVboMesh& mesh){
     getCellMesh(_c, ofPoint(0,0), mesh);
 }
 
-void getCellMesh(voro::voronoicell &_c, ofPoint _pos, ofVboMesh& mesh ){
+void getCellMesh(voro::voronoicell &_c, ofPoint _pos, ofVboMesh& _mesh ){
     if( _c.p ) {
         
-        ofPoint centroid = getCellCentroid(_c,_pos);
-        
-        int i,j,k,l,m,n;
-        
-        //  Vertex
+        //  Extract Verteces
         //
         double *ptsp=_c.pts;
         vector<ofPoint> vertices;
-        vector<ofPoint> normals;
-        for(i = 0; i < _c.p; i++, ptsp+=3){
+        for(int i = 0; i < _c.p; i++, ptsp+=3){
             ofPoint newPoint;
             newPoint.x = _pos.x + ptsp[0]*0.5;
             newPoint.y = _pos.y + ptsp[1]*0.5;
             newPoint.z = _pos.z + ptsp[2]*0.5;
             vertices.push_back(newPoint);
-            
-            ofPoint newNormal;
-            newNormal = _pos - newPoint;//centroid ;
-            newNormal = newNormal.normalize();
-            normals.push_back(newNormal);
         }
         
-        //        ofVboMesh mesh;
+        ofVboMesh mesh;
         mesh.setMode(OF_PRIMITIVE_TRIANGLES );
         mesh.addVertices(vertices);
-        mesh.addNormals(normals);
         
-        //  Index
+        //  Add triangles using Indeces
         //
-        for(i = 1; i < _c.p; i++){
-            for(j = 0; j < _c.nu[i]; j++) {
+        int k,l,m,n;
+        for(int i = 1; i < _c.p; i++){
+            for(int j = 0; j < _c.nu[i]; j++) {
                 
                 k = _c.ed[i][j];
                 
@@ -151,6 +151,27 @@ void getCellMesh(voro::voronoicell &_c, ofPoint _pos, ofVboMesh& mesh ){
                     }
                 }
             }
+        }
+        
+        //  Calculate Normals
+        //
+        _mesh.setMode(OF_PRIMITIVE_TRIANGLES);
+        vector<ofMeshFace> faces = mesh.getUniqueFaces();
+        for (int i = 0; i < faces.size(); i++) {
+            ofMeshFace face = faces[i];
+            ofPoint a = face.getVertex(0);
+            ofPoint b = face.getVertex(1);
+            ofPoint c = face.getVertex(2);
+            
+            ofPoint normal = ((b - a).cross(c - a)).normalize() * -1.;
+            
+            _mesh.addVertex(a);
+            _mesh.addNormal(normal);
+            
+            _mesh.addVertex(b);
+            _mesh.addNormal(normal);
+            _mesh.addVertex(c);
+            _mesh.addNormal(normal);
         }
     }
 };

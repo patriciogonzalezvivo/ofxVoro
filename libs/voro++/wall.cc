@@ -7,7 +7,7 @@
 /** \file wall.cc
  * \brief Function implementations for the derived wall classes. */
 
-#include "wall.h"
+#include "wall.hh"
 
 namespace voro {
 
@@ -118,5 +118,15 @@ bool wall_cone::cut_cell_base(v_cell &c,double x,double y,double z) {
 	}
 	return true;
 }
+
+// Explicit instantiation
+template bool wall_sphere::cut_cell_base(voronoicell&,double,double,double);
+template bool wall_sphere::cut_cell_base(voronoicell_neighbor&,double,double,double);
+template bool wall_plane::cut_cell_base(voronoicell&,double,double,double);
+template bool wall_plane::cut_cell_base(voronoicell_neighbor&,double,double,double);
+template bool wall_cylinder::cut_cell_base(voronoicell&,double,double,double);
+template bool wall_cylinder::cut_cell_base(voronoicell_neighbor&,double,double,double);
+template bool wall_cone::cut_cell_base(voronoicell&,double,double,double);
+template bool wall_cone::cut_cell_base(voronoicell_neighbor&,double,double,double);
 
 }

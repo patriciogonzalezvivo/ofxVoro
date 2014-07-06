@@ -10,8 +10,8 @@
 
 #include <cmath>
 
-#include "config.h"
-#include "pre_container.h"
+#include "config.hh"
+#include "pre_container.hh"
 
 namespace voro {
 

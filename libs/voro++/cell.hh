@@ -12,8 +12,8 @@
 
 #include <vector>
 
-#include "config.h"
-#include "common.h"
+#include "config.hh"
+#include "common.hh"
 
 namespace voro {
 

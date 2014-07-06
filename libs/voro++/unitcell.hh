@@ -12,8 +12,8 @@
 
 #include <vector>
 
-#include "config.h"
-#include "cell.h"
+#include "config.hh"
+#include "cell.hh"
 
 namespace voro {
 

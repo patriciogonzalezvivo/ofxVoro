@@ -12,8 +12,8 @@
 
 #include <cstdio>
 
-#include "c_loops.h"
-#include "container.h"
+#include "c_loops.hh"
+#include "container.hh"
 
 namespace voro {
 

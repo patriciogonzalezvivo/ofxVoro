@@ -10,8 +10,8 @@
 #include <cmath>
 #include <queue>
 
-#include "unitcell.h"
-#include "cell.h"
+#include "unitcell.hh"
+#include "cell.hh"
 
 namespace voro {
 

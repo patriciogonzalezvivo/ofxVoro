@@ -10,8 +10,8 @@
 #ifndef VOROPP_WALL_HH
 #define VOROPP_WALL_HH
 
-#include "cell.h"
-#include "container.h"
+#include "cell.hh"
+#include "container.hh"
 
 namespace voro {
 

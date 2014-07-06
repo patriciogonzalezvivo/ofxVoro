@@ -7,11 +7,11 @@
 /** \file v_compute.cc
  * \brief Function implementantions for the voro_compute template. */
 
-#include "worklist.h"
-#include "v_compute.h"
-#include "rad_option.h"
-#include "container.h"
-#include "container_prd.h"
+#include "worklist.hh"
+#include "v_compute.hh"
+#include "rad_option.hh"
+#include "container.hh"
+#include "container_prd.hh"
 
 namespace voro {
 

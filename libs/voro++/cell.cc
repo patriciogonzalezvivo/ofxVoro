@@ -10,9 +10,9 @@
 #include <cmath>
 #include <cstring>
 
-#include "config.h"
-#include "common.h"
-#include "cell.h"
+#include "config.hh"
+#include "common.hh"
+#include "cell.hh"
 
 namespace voro {
 

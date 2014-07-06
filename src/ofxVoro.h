@@ -10,7 +10,7 @@
 
 #include "ofMain.h"
 
-#include "voro++.h"
+#include "voro++.hh"
 
 //  cell (voronoicell) wrappers
 //

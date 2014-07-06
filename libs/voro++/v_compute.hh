@@ -10,9 +10,9 @@
 #ifndef VOROPP_V_COMPUTE_HH
 #define VOROPP_V_COMPUTE_HH
 
-#include "config.h"
-#include "worklist.h"
-#include "cell.h"
+#include "config.hh"
+#include "worklist.hh"
+#include "cell.hh"
 
 namespace voro {
 

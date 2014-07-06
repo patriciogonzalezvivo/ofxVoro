@@ -7,12 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		195c46839d726d4d3fac98a73b3df649 /* c_loops.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6ab3237d3a471439d02e0dbf17e238a6 /* c_loops.cpp */; };
-		2586857121cd478b52f4aa9baf881e68 /* v_compute.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0f64bc1bc63bc4b5585d534daf5ae3f4 /* v_compute.cpp */; };
-		6f7dda580cc59064b60b8fc7f6465484 /* ofxVoro.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 06990387b09caf1f19cc00953999c182 /* ofxVoro.cpp */; };
-		79eb4a2891814ff0057419f87f921e18 /* container_prd.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4b9a7d3685be883648a62b74b5a0f920 /* container_prd.cpp */; };
-		95ff0a796c923f5d75f0f793c38afe0f /* unitcell.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97d1c6f6d965ea56a312bfca4af08de8 /* unitcell.cpp */; };
-		96c0d12fc6790e819d9bda4fc8aff7cc /* common.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 05f650fe7ec62570ba329bd9b26108ca /* common.cpp */; };
+		3D2454581969C39D005671B0 /* ofxVoro.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3D24543C1969C39D005671B0 /* ofxVoro.cpp */; };
+		3D2454591969C39D005671B0 /* c_loops.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3D2454401969C39D005671B0 /* c_loops.cc */; };
+		3D24545A1969C39D005671B0 /* cell.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3D2454421969C39D005671B0 /* cell.cc */; };
+		3D24545B1969C39D005671B0 /* common.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3D2454441969C39D005671B0 /* common.cc */; };
+		3D24545C1969C39D005671B0 /* container.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3D2454471969C39D005671B0 /* container.cc */; };
+		3D24545D1969C39D005671B0 /* container_prd.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3D2454491969C39D005671B0 /* container_prd.cc */; };
+		3D24545E1969C39D005671B0 /* pre_container.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3D24544B1969C39D005671B0 /* pre_container.cc */; };
+		3D24545F1969C39D005671B0 /* unitcell.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3D24544E1969C39D005671B0 /* unitcell.cc */; };
+		3D2454601969C39D005671B0 /* v_base.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3D2454501969C39D005671B0 /* v_base.cc */; };
+		3D2454611969C39D005671B0 /* v_compute.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3D2454521969C39D005671B0 /* v_compute.cc */; };
+		3D2454621969C39D005671B0 /* wall.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3D2454551969C39D005671B0 /* wall.cc */; };
 		BBAB23CB13894F3D00AA2426 /* GLUT.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BBAB23BE13894E4700AA2426 /* GLUT.framework */; };
 		E4328149138ABC9F0047C5CB /* openFrameworksDebug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4328148138ABC890047C5CB /* openFrameworksDebug.a */; };
 		E45BE97B0E8CC7DD009D7055 /* AGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E45BE9710E8CC7DD009D7055 /* AGL.framework */; };
@@ -33,11 +38,6 @@
 		E7E077E515D3B63C0020DFD4 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7E077E415D3B63C0020DFD4 /* CoreVideo.framework */; };
 		E7E077E815D3B6510020DFD4 /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7E077E715D3B6510020DFD4 /* QTKit.framework */; };
 		E7F985F815E0DEA3003869B5 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7F985F515E0DE99003869B5 /* Accelerate.framework */; };
-		abfee33bc80098af62ad03a3d6cad764 /* cell.cpp in Sources */ = {isa = PBXBuildFile; fileRef = d2b465bddbb5dc5934bddf69878f9517 /* cell.cpp */; };
-		c562fafb81bd80c51e0f56c4b71e3a8e /* pre_container.cpp in Sources */ = {isa = PBXBuildFile; fileRef = e36e628dc5ef8b55b85f668824b99aa8 /* pre_container.cpp */; };
-		c647a825dbffab2815b0f6f6d69dcd88 /* wall.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 83458bc6e1db8ab84f0fa66fd5859b1d /* wall.cpp */; };
-		c9dcd0bd84c1dc6b9b29aceecf9f1e31 /* container.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 571fed319c37aa3eee17cba269c8f436 /* container.cpp */; };
-		fa1925c06194ca3679c6d9fa8e7d8dd1 /* v_base.cpp in Sources */ = {isa = PBXBuildFile; fileRef = b88751577605a68adfb7dd83faa62572 /* v_base.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,24 +71,32 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		05401a674726063871399c0d53d08e7a /* cell.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = cell.h; path = "../../../addons/ofxVoro/libs/voro++/cell.h"; sourceTree = SOURCE_ROOT; };
-		05f650fe7ec62570ba329bd9b26108ca /* common.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = common.cpp; path = "../../../addons/ofxVoro/libs/voro++/common.cpp"; sourceTree = SOURCE_ROOT; };
-		06990387b09caf1f19cc00953999c182 /* ofxVoro.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxVoro.cpp; path = ../../../addons/ofxVoro/src/ofxVoro.cpp; sourceTree = SOURCE_ROOT; };
-		0f64bc1bc63bc4b5585d534daf5ae3f4 /* v_compute.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = v_compute.cpp; path = "../../../addons/ofxVoro/libs/voro++/v_compute.cpp"; sourceTree = SOURCE_ROOT; };
-		1727332772b2730a901db5027daea133 /* config.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = config.h; path = "../../../addons/ofxVoro/libs/voro++/config.h"; sourceTree = SOURCE_ROOT; };
-		1d0de172540a2af23c3aaa00b6c5163c /* v_base.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = v_base.h; path = "../../../addons/ofxVoro/libs/voro++/v_base.h"; sourceTree = SOURCE_ROOT; };
-		233215cea6819daa38573bedafa49b08 /* container.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = container.h; path = "../../../addons/ofxVoro/libs/voro++/container.h"; sourceTree = SOURCE_ROOT; };
-		29f7f3645e7f495c52198ec3a183286d /* common.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = common.h; path = "../../../addons/ofxVoro/libs/voro++/common.h"; sourceTree = SOURCE_ROOT; };
-		3d677c3acf6a9484950d203c05a7e2ae /* rad_option.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = rad_option.h; path = "../../../addons/ofxVoro/libs/voro++/rad_option.h"; sourceTree = SOURCE_ROOT; };
-		4b9a7d3685be883648a62b74b5a0f920 /* container_prd.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = container_prd.cpp; path = "../../../addons/ofxVoro/libs/voro++/container_prd.cpp"; sourceTree = SOURCE_ROOT; };
-		4cf84e7c7f3d309b07d1d007f285447c /* container_prd.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = container_prd.h; path = "../../../addons/ofxVoro/libs/voro++/container_prd.h"; sourceTree = SOURCE_ROOT; };
-		4dcb446d2590489e0be6ce3967570d74 /* wall.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = wall.h; path = "../../../addons/ofxVoro/libs/voro++/wall.h"; sourceTree = SOURCE_ROOT; };
-		571fed319c37aa3eee17cba269c8f436 /* container.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = container.cpp; path = "../../../addons/ofxVoro/libs/voro++/container.cpp"; sourceTree = SOURCE_ROOT; };
-		607b42fda8b2f8f94dad851ec26f8721 /* worklist.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = worklist.h; path = "../../../addons/ofxVoro/libs/voro++/worklist.h"; sourceTree = SOURCE_ROOT; };
-		6ab3237d3a471439d02e0dbf17e238a6 /* c_loops.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = c_loops.cpp; path = "../../../addons/ofxVoro/libs/voro++/c_loops.cpp"; sourceTree = SOURCE_ROOT; };
-		6eb9db1dfef8b092fc99c1efdcfb10c9 /* ofxVoro.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxVoro.h; path = ../../../addons/ofxVoro/src/ofxVoro.h; sourceTree = SOURCE_ROOT; };
-		83458bc6e1db8ab84f0fa66fd5859b1d /* wall.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = wall.cpp; path = "../../../addons/ofxVoro/libs/voro++/wall.cpp"; sourceTree = SOURCE_ROOT; };
-		97d1c6f6d965ea56a312bfca4af08de8 /* unitcell.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = unitcell.cpp; path = "../../../addons/ofxVoro/libs/voro++/unitcell.cpp"; sourceTree = SOURCE_ROOT; };
+		3D24543C1969C39D005671B0 /* ofxVoro.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxVoro.cpp; sourceTree = "<group>"; };
+		3D24543D1969C39D005671B0 /* ofxVoro.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxVoro.h; sourceTree = "<group>"; };
+		3D2454401969C39D005671B0 /* c_loops.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = c_loops.cc; sourceTree = "<group>"; };
+		3D2454411969C39D005671B0 /* c_loops.hh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = c_loops.hh; sourceTree = "<group>"; };
+		3D2454421969C39D005671B0 /* cell.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = cell.cc; sourceTree = "<group>"; };
+		3D2454431969C39D005671B0 /* cell.hh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = cell.hh; sourceTree = "<group>"; };
+		3D2454441969C39D005671B0 /* common.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = common.cc; sourceTree = "<group>"; };
+		3D2454451969C39D005671B0 /* common.hh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = common.hh; sourceTree = "<group>"; };
+		3D2454461969C39D005671B0 /* config.hh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = config.hh; sourceTree = "<group>"; };
+		3D2454471969C39D005671B0 /* container.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = container.cc; sourceTree = "<group>"; };
+		3D2454481969C39D005671B0 /* container.hh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = container.hh; sourceTree = "<group>"; };
+		3D2454491969C39D005671B0 /* container_prd.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = container_prd.cc; sourceTree = "<group>"; };
+		3D24544A1969C39D005671B0 /* container_prd.hh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = container_prd.hh; sourceTree = "<group>"; };
+		3D24544B1969C39D005671B0 /* pre_container.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = pre_container.cc; sourceTree = "<group>"; };
+		3D24544C1969C39D005671B0 /* pre_container.hh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = pre_container.hh; sourceTree = "<group>"; };
+		3D24544D1969C39D005671B0 /* rad_option.hh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = rad_option.hh; sourceTree = "<group>"; };
+		3D24544E1969C39D005671B0 /* unitcell.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = unitcell.cc; sourceTree = "<group>"; };
+		3D24544F1969C39D005671B0 /* unitcell.hh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = unitcell.hh; sourceTree = "<group>"; };
+		3D2454501969C39D005671B0 /* v_base.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = v_base.cc; sourceTree = "<group>"; };
+		3D2454511969C39D005671B0 /* v_base.hh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = v_base.hh; sourceTree = "<group>"; };
+		3D2454521969C39D005671B0 /* v_compute.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = v_compute.cc; sourceTree = "<group>"; };
+		3D2454531969C39D005671B0 /* v_compute.hh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = v_compute.hh; sourceTree = "<group>"; };
+		3D2454541969C39D005671B0 /* voro++.hh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = "voro++.hh"; sourceTree = "<group>"; };
+		3D2454551969C39D005671B0 /* wall.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = wall.cc; sourceTree = "<group>"; };
+		3D2454561969C39D005671B0 /* wall.hh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = wall.hh; sourceTree = "<group>"; };
+		3D2454571969C39D005671B0 /* worklist.hh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = worklist.hh; sourceTree = "<group>"; };
 		BBAB23BE13894E4700AA2426 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = ../../../libs/glut/lib/osx/GLUT.framework; sourceTree = "<group>"; };
 		E4328143138ABC890047C5CB /* openFrameworksLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = openFrameworksLib.xcodeproj; path = ../../../libs/openFrameworksCompiled/project/osx/openFrameworksLib.xcodeproj; sourceTree = SOURCE_ROOT; };
 		E45BE9710E8CC7DD009D7055 /* AGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AGL.framework; path = /System/Library/Frameworks/AGL.framework; sourceTree = "<absolute>"; };
@@ -113,14 +121,6 @@
 		E7E077E415D3B63C0020DFD4 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = /System/Library/Frameworks/CoreVideo.framework; sourceTree = "<absolute>"; };
 		E7E077E715D3B6510020DFD4 /* QTKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QTKit.framework; path = /System/Library/Frameworks/QTKit.framework; sourceTree = "<absolute>"; };
 		E7F985F515E0DE99003869B5 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = /System/Library/Frameworks/Accelerate.framework; sourceTree = "<absolute>"; };
-		b7eed119e4186194125384a9fb982e36 /* v_compute.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = v_compute.h; path = "../../../addons/ofxVoro/libs/voro++/v_compute.h"; sourceTree = SOURCE_ROOT; };
-		b88751577605a68adfb7dd83faa62572 /* v_base.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = v_base.cpp; path = "../../../addons/ofxVoro/libs/voro++/v_base.cpp"; sourceTree = SOURCE_ROOT; };
-		ba2f9c119a798b30e2bc2b498373370d /* unitcell.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = unitcell.h; path = "../../../addons/ofxVoro/libs/voro++/unitcell.h"; sourceTree = SOURCE_ROOT; };
-		ceaba991bcd542273e250fa1971a351e /* voro++.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = "voro++.h"; path = "../../../addons/ofxVoro/libs/voro++/voro++.h"; sourceTree = SOURCE_ROOT; };
-		d2b465bddbb5dc5934bddf69878f9517 /* cell.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = cell.cpp; path = "../../../addons/ofxVoro/libs/voro++/cell.cpp"; sourceTree = SOURCE_ROOT; };
-		d38933a7c263e68acab4bee12474dc6e /* c_loops.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = c_loops.h; path = "../../../addons/ofxVoro/libs/voro++/c_loops.h"; sourceTree = SOURCE_ROOT; };
-		e36e628dc5ef8b55b85f668824b99aa8 /* pre_container.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = pre_container.cpp; path = "../../../addons/ofxVoro/libs/voro++/pre_container.cpp"; sourceTree = SOURCE_ROOT; };
-		fbd19ad55ad43f0d43cd816daf82dc9a /* pre_container.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = pre_container.h; path = "../../../addons/ofxVoro/libs/voro++/pre_container.h"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -151,58 +151,69 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		51556d77fdf728870670fa6614f4e36a /* libs */ = {
+		3D24543A1969C39D005671B0 /* ofxVoro */ = {
 			isa = PBXGroup;
 			children = (
-				5bb8a91967a822ad0764b2734a66eae9 /* voro++ */,
-			);
-			name = libs;
-			sourceTree = "<group>";
-		};
-		5bb8a91967a822ad0764b2734a66eae9 /* voro++ */ = {
-			isa = PBXGroup;
-			children = (
-				6ab3237d3a471439d02e0dbf17e238a6 /* c_loops.cpp */,
-				d38933a7c263e68acab4bee12474dc6e /* c_loops.h */,
-				d2b465bddbb5dc5934bddf69878f9517 /* cell.cpp */,
-				05401a674726063871399c0d53d08e7a /* cell.h */,
-				05f650fe7ec62570ba329bd9b26108ca /* common.cpp */,
-				29f7f3645e7f495c52198ec3a183286d /* common.h */,
-				1727332772b2730a901db5027daea133 /* config.h */,
-				571fed319c37aa3eee17cba269c8f436 /* container.cpp */,
-				233215cea6819daa38573bedafa49b08 /* container.h */,
-				4b9a7d3685be883648a62b74b5a0f920 /* container_prd.cpp */,
-				4cf84e7c7f3d309b07d1d007f285447c /* container_prd.h */,
-				e36e628dc5ef8b55b85f668824b99aa8 /* pre_container.cpp */,
-				fbd19ad55ad43f0d43cd816daf82dc9a /* pre_container.h */,
-				3d677c3acf6a9484950d203c05a7e2ae /* rad_option.h */,
-				97d1c6f6d965ea56a312bfca4af08de8 /* unitcell.cpp */,
-				ba2f9c119a798b30e2bc2b498373370d /* unitcell.h */,
-				b88751577605a68adfb7dd83faa62572 /* v_base.cpp */,
-				1d0de172540a2af23c3aaa00b6c5163c /* v_base.h */,
-				0f64bc1bc63bc4b5585d534daf5ae3f4 /* v_compute.cpp */,
-				b7eed119e4186194125384a9fb982e36 /* v_compute.h */,
-				ceaba991bcd542273e250fa1971a351e /* voro++.h */,
-				83458bc6e1db8ab84f0fa66fd5859b1d /* wall.cpp */,
-				4dcb446d2590489e0be6ce3967570d74 /* wall.h */,
-				607b42fda8b2f8f94dad851ec26f8721 /* worklist.h */,
-			);
-			name = "voro++";
-			sourceTree = "<group>";
-		};
-		5f0bf05b228ff83ee00e782307d75dc3 /* ofxVoro */ = {
-			isa = PBXGroup;
-			children = (
-				c300cfa0c92162b42a24ace93c40b6d0 /* src */,
-				51556d77fdf728870670fa6614f4e36a /* libs */,
+				3D24543B1969C39D005671B0 /* src */,
+				3D24543E1969C39D005671B0 /* libs */,
 			);
 			name = ofxVoro;
+			sourceTree = "<group>";
+		};
+		3D24543B1969C39D005671B0 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				3D24543C1969C39D005671B0 /* ofxVoro.cpp */,
+				3D24543D1969C39D005671B0 /* ofxVoro.h */,
+			);
+			name = src;
+			path = ../src;
+			sourceTree = "<group>";
+		};
+		3D24543E1969C39D005671B0 /* libs */ = {
+			isa = PBXGroup;
+			children = (
+				3D24543F1969C39D005671B0 /* voro++ */,
+			);
+			name = libs;
+			path = ../libs;
+			sourceTree = "<group>";
+		};
+		3D24543F1969C39D005671B0 /* voro++ */ = {
+			isa = PBXGroup;
+			children = (
+				3D2454401969C39D005671B0 /* c_loops.cc */,
+				3D2454411969C39D005671B0 /* c_loops.hh */,
+				3D2454421969C39D005671B0 /* cell.cc */,
+				3D2454431969C39D005671B0 /* cell.hh */,
+				3D2454441969C39D005671B0 /* common.cc */,
+				3D2454451969C39D005671B0 /* common.hh */,
+				3D2454461969C39D005671B0 /* config.hh */,
+				3D2454471969C39D005671B0 /* container.cc */,
+				3D2454481969C39D005671B0 /* container.hh */,
+				3D2454491969C39D005671B0 /* container_prd.cc */,
+				3D24544A1969C39D005671B0 /* container_prd.hh */,
+				3D24544B1969C39D005671B0 /* pre_container.cc */,
+				3D24544C1969C39D005671B0 /* pre_container.hh */,
+				3D24544D1969C39D005671B0 /* rad_option.hh */,
+				3D24544E1969C39D005671B0 /* unitcell.cc */,
+				3D24544F1969C39D005671B0 /* unitcell.hh */,
+				3D2454501969C39D005671B0 /* v_base.cc */,
+				3D2454511969C39D005671B0 /* v_base.hh */,
+				3D2454521969C39D005671B0 /* v_compute.cc */,
+				3D2454531969C39D005671B0 /* v_compute.hh */,
+				3D2454541969C39D005671B0 /* voro++.hh */,
+				3D2454551969C39D005671B0 /* wall.cc */,
+				3D2454561969C39D005671B0 /* wall.hh */,
+				3D2454571969C39D005671B0 /* worklist.hh */,
+			);
+			path = "voro++";
 			sourceTree = "<group>";
 		};
 		BB4B014C10F69532006C3DED /* addons */ = {
 			isa = PBXGroup;
 			children = (
-				5f0bf05b228ff83ee00e782307d75dc3 /* ofxVoro */,
+				3D24543A1969C39D005671B0 /* ofxVoro */,
 			);
 			name = addons;
 			sourceTree = "<group>";
@@ -286,15 +297,6 @@
 			name = openFrameworks;
 			sourceTree = "<group>";
 		};
-		c300cfa0c92162b42a24ace93c40b6d0 /* src */ = {
-			isa = PBXGroup;
-			children = (
-				6eb9db1dfef8b092fc99c1efdcfb10c9 /* ofxVoro.h */,
-				06990387b09caf1f19cc00953999c182 /* ofxVoro.cpp */,
-			);
-			name = src;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -322,6 +324,8 @@
 /* Begin PBXProject section */
 		E4B69B4C0A3A1720003C02F2 /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+			};
 			buildConfigurationList = E4B69B4D0A3A1720003C02F2 /* Build configuration list for PBXProject "example-tissue" */;
 			compatibilityVersion = "Xcode 2.4";
 			developmentRegion = English;
@@ -379,19 +383,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3D24545B1969C39D005671B0 /* common.cc in Sources */,
+				3D24545F1969C39D005671B0 /* unitcell.cc in Sources */,
 				E4B69E200A3A1BDC003C02F2 /* main.cpp in Sources */,
+				3D2454591969C39D005671B0 /* c_loops.cc in Sources */,
+				3D2454581969C39D005671B0 /* ofxVoro.cpp in Sources */,
+				3D24545D1969C39D005671B0 /* container_prd.cc in Sources */,
+				3D2454611969C39D005671B0 /* v_compute.cc in Sources */,
+				3D2454621969C39D005671B0 /* wall.cc in Sources */,
+				3D2454601969C39D005671B0 /* v_base.cc in Sources */,
 				E4B69E210A3A1BDC003C02F2 /* ofApp.cpp in Sources */,
-				6f7dda580cc59064b60b8fc7f6465484 /* ofxVoro.cpp in Sources */,
-				195c46839d726d4d3fac98a73b3df649 /* c_loops.cpp in Sources */,
-				abfee33bc80098af62ad03a3d6cad764 /* cell.cpp in Sources */,
-				96c0d12fc6790e819d9bda4fc8aff7cc /* common.cpp in Sources */,
-				c9dcd0bd84c1dc6b9b29aceecf9f1e31 /* container.cpp in Sources */,
-				79eb4a2891814ff0057419f87f921e18 /* container_prd.cpp in Sources */,
-				c562fafb81bd80c51e0f56c4b71e3a8e /* pre_container.cpp in Sources */,
-				95ff0a796c923f5d75f0f793c38afe0f /* unitcell.cpp in Sources */,
-				fa1925c06194ca3679c6d9fa8e7d8dd1 /* v_base.cpp in Sources */,
-				2586857121cd478b52f4aa9baf881e68 /* v_compute.cpp in Sources */,
-				c647a825dbffab2815b0f6f6d69dcd88 /* wall.cpp in Sources */,
+				3D24545C1969C39D005671B0 /* container.cc in Sources */,
+				3D24545E1969C39D005671B0 /* pre_container.cc in Sources */,
+				3D24545A1969C39D005671B0 /* cell.cc in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -562,6 +566,7 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)Debug";
+				USER_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -648,6 +653,7 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

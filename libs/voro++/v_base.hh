@@ -10,7 +10,7 @@
 #ifndef VOROPP_V_BASE_HH
 #define VOROPP_V_BASE_HH
 
-#include "worklist.h"
+#include "worklist.hh"
 
 namespace voro {
 
