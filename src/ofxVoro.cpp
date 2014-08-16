@@ -187,7 +187,7 @@ void getCellsFromContainer(voro::container &_con, float _wallsThikness, vector<o
         do {
             voro::voronoicell c;
             if( !_con.compute_cell(c, vl) ) {
-                return cells;
+                return;
             } else {
                 double *pp = _con.p[vl.ijk] + _con.ps * vl.q;
 				ofVboMesh cellMesh;
@@ -198,8 +198,6 @@ void getCellsFromContainer(voro::container &_con, float _wallsThikness, vector<o
             
         } while( vl.inc() );
     }
-    
-    return cells;
 }
 
 vector<ofVboMesh>  getCellsFromContainer(voro::container &_con, float _wallsThikness){
@@ -236,7 +234,7 @@ void getCellsFromContainer(voro::container &_con, vector<ofVboMesh>& cells, floa
         do {
             voro::voronoicell c;
             if( !_con.compute_cell(c, vl) ) {
-                return cells;
+                return;
             } else {
                 if(getCellRadius(c)<_maxRadius){
                     double *pp = _con.p[vl.ijk] + _con.ps * vl.q;
@@ -248,9 +246,8 @@ void getCellsFromContainer(voro::container &_con, vector<ofVboMesh>& cells, floa
             }
         } while( vl.inc() );
     }
-    
-    return cells;
 }
+
 vector<ofVboMesh>  getCellsFromContainer(voro::container &_con, float _wallsThikness, float _maxRadius){
     vector<ofVboMesh> cells;
     
@@ -286,7 +283,7 @@ void getCellsFromContainer(voro::container &_con, vector<ofVboMesh>& cells){
         do {
             voro::voronoicell c;
             if( !_con.compute_cell(c, vl) ) {
-                return cells;
+                return;
             } else {
                 double *pp = _con.p[vl.ijk] + _con.ps * vl.q;
 				ofVboMesh cellMesh;
@@ -297,8 +294,6 @@ void getCellsFromContainer(voro::container &_con, vector<ofVboMesh>& cells){
             
         } while( vl.inc() );
     }
-    
-    return cells;
 }
 
 vector<float> getCellsRadius(voro::container &_con){
