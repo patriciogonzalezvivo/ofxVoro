@@ -51,6 +51,7 @@ void testApp::makeTissue(int _nCells, int _width, int _height, int _deep){
     }
     
     cellMeshes = getCellsFromContainer(con,0.0);
+    cellMeshWireframes = getCellsFromContainer(con,0.0,true);
     cellRadius = getCellsRadius(con);
     cellCentroids = getCellsCentroids(con);
 }
@@ -83,7 +84,7 @@ void testApp::draw(){
         ofPushStyle();
         ofSetLineWidth(3);
         ofSetColor(100);
-        cellMeshes[i].drawWireframe();
+        cellMeshWireframes[i].draw();
         ofPopStyle();
     }
     

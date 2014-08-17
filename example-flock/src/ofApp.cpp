@@ -39,6 +39,8 @@ void testApp::update(){
     
     cellMeshes.clear();
     cellMeshes = getCellsFromContainer(con,0);
+	cellMeshWireframes.clear();
+	cellMeshWireframes = getCellsFromContainer(con,0,true);
     
     ofSetWindowTitle(ofToString(ofGetFrameRate()));
 }
@@ -70,7 +72,7 @@ void testApp::draw(){
         
         ofSetLineWidth(3);
         ofSetColor(0,255,255);
-        cellMeshes[i].drawWireframe();
+        cellMeshWireframes[i].draw();
         ofPopStyle();
     }
     

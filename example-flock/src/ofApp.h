@@ -26,5 +26,6 @@ public:
     
     vector<Boid*>   boids;
     vector<ofVboMesh>  cellMeshes;
+    vector<ofVboMesh>  cellMeshWireframes;
     int             containerSize;
 };

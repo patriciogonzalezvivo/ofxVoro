@@ -28,4 +28,5 @@ public:
     vector<ofPoint> cellCentroids;
     vector<float>   cellRadius;
     vector<ofVboMesh>  cellMeshes;
+    vector<ofVboMesh>  cellMeshWireframes;
 };
