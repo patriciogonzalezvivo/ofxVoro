@@ -31,79 +31,95 @@ vector<ofPoint> getCellVerteces(voro::voronoicell &_c, ofPoint _pos ){
     return vertices;
 }
 
-ofVboMesh getCellMesh(voro::voronoicell &_c, ofPoint _pos ){
+ofVboMesh getCellMesh(voro::voronoicell &_c, ofPoint _pos, bool bWireframe){
     if( _c.p ) {
         ofVboMesh mesh;
-		getCellMesh(_c, _pos, mesh);
+		getCellMesh(_c, _pos, mesh, bWireframe);
         return mesh;
     }
     return ofVboMesh();
 }
 
-void getCellMesh(voro::voronoicell &_c, ofVboMesh& mesh){
-    getCellMesh(_c, ofPoint(0,0), mesh);
+void getCellMesh(voro::voronoicell &_c, ofVboMesh& mesh, bool bWireframe){
+    getCellMesh(_c, ofPoint(0,0), mesh, bWireframe);
 }
 
-void getCellMesh(voro::voronoicell &_c, ofPoint _pos, ofVboMesh& _mesh ){
+void getCellMesh(voro::voronoicell &_c, ofPoint _pos, ofVboMesh& _mesh, bool bWireframe){
     if( _c.p ) {
         
-        //  Extract Verteces
-        //
-        ofVboMesh mesh;
-        mesh.setMode(OF_PRIMITIVE_TRIANGLES );
-        mesh.addVertices(getCellVerteces(_c, _pos));
-        
-        //  Add triangles using Indeces
-        //
-        int k,l,m,n;
-        for(int i = 1; i < _c.p; i++){
-            for(int j = 0; j < _c.nu[i]; j++) {
-                
-                k = _c.ed[i][j];
-                
-                if( k >= 0 ) {
-                    _c.ed[i][j]=-1-k;
-                    l = _c.cycle_up( _c.ed[i][ _c.nu[i]+j], k);
-                    m = _c.ed[k][l];
-                    _c.ed[k][l]=-1-m;
-                    
-                    while(m!=i) {
-                        n = _c.cycle_up( _c.ed[k][ _c.nu[k]+l],m);
-                        mesh.addTriangle(i, k, m);
-                        
-                        k=m;
-                        l=n;
-                        m=_c.ed[k][l];
-                        _c.ed[k][l]=-1-m;
-                    }
-                }
-            }
-        }
-        
-        //  Calculate Normals
-        //
-        _mesh.setMode(OF_PRIMITIVE_TRIANGLES);
-        vector<ofMeshFace> faces = mesh.getUniqueFaces();
-        for (int i = 0; i < faces.size(); i++) {
-            ofMeshFace face = faces[i];
-            ofPoint a = face.getVertex(0);
-            ofPoint b = face.getVertex(1);
-            ofPoint c = face.getVertex(2);
-            
-            ofPoint normal = ((b - a).cross(c - a)).normalize() * -1.;
-            
-            _mesh.addVertex(a);
-            _mesh.addNormal(normal);
-            
-            _mesh.addVertex(b);
-            _mesh.addNormal(normal);
-            _mesh.addVertex(c);
-            _mesh.addNormal(normal);
-        }
+		if( !bWireframe ) {
+			//  Extract Verteces
+			//
+			ofVboMesh mesh;
+			mesh.setMode(OF_PRIMITIVE_TRIANGLES );
+			mesh.addVertices(getCellVerteces(_c, _pos));
+			
+			//  Add triangles using Indeces
+			//
+			int k,l,m,n;
+			for(int i = 1; i < _c.p; i++){
+				for(int j = 0; j < _c.nu[i]; j++) {
+					
+					k = _c.ed[i][j];
+					
+					if( k >= 0 ) {
+						_c.ed[i][j]=-1-k;
+						l = _c.cycle_up( _c.ed[i][ _c.nu[i]+j], k);
+						m = _c.ed[k][l];
+						_c.ed[k][l]=-1-m;
+						
+						while(m!=i) {
+							n = _c.cycle_up( _c.ed[k][ _c.nu[k]+l],m);
+							mesh.addTriangle(i, k, m);
+							
+							k=m;
+							l=n;
+							m=_c.ed[k][l];
+							_c.ed[k][l]=-1-m;
+						}
+					}
+				}
+			}
+			
+			//  Calculate Normals
+			//
+			_mesh.setMode(OF_PRIMITIVE_TRIANGLES);
+			vector<ofMeshFace> faces = mesh.getUniqueFaces();
+			for (int i = 0; i < faces.size(); i++) {
+				ofMeshFace face = faces[i];
+				ofPoint a = face.getVertex(0);
+				ofPoint b = face.getVertex(1);
+				ofPoint c = face.getVertex(2);
+				
+				ofPoint normal = ((b - a).cross(c - a)).normalize() * -1.;
+				
+				_mesh.addVertex(a);
+				_mesh.addNormal(normal);
+				
+				_mesh.addVertex(b);
+				_mesh.addNormal(normal);
+				_mesh.addVertex(c);
+				_mesh.addNormal(normal);
+			}
+		} else { // wireframe
+			_mesh.setMode(OF_PRIMITIVE_LINES);
+			_mesh.addVertices(getCellVerteces(_c, _pos));
+			for(int i = 1; i < _c.p; i++){
+				for(int j = 0; j < _c.nu[i]; j++) {
+					
+					int k = _c.ed[i][j];
+					
+					if( k >= 0 ) {
+						_mesh.addIndex(i);
+						_mesh.addIndex(k);
+					}
+				}
+			}
+		}
     }
 }
 
-void getCellsFromContainer(voro::container &_con, float _wallsThikness, vector<ofVboMesh>& cells){
+void getCellsFromContainer(voro::container &_con, float _wallsThikness, vector<ofVboMesh>& cells, bool bWireframe){
     
 	cells.clear();
 	
@@ -118,7 +134,7 @@ void getCellsFromContainer(voro::container &_con, float _wallsThikness, vector<o
             } else {
                 double *pp = _con.p[vl.ijk] + _con.ps * vl.q;
 				ofVboMesh cellMesh;
-                getCellMesh(c, ofPoint(pp[0],pp[1],pp[2])*(float)(1.0+_wallsThikness), cellMesh);
+                getCellMesh(c, ofPoint(pp[0],pp[1],pp[2])*(float)(1.0+_wallsThikness), cellMesh, bWireframe);
                 cells.push_back( cellMesh );
                 i++;
             }
@@ -127,13 +143,13 @@ void getCellsFromContainer(voro::container &_con, float _wallsThikness, vector<o
     }
 }
 
-vector<ofVboMesh>  getCellsFromContainer(voro::container &_con, float _wallsThikness){
+vector<ofVboMesh>  getCellsFromContainer(voro::container &_con, float _wallsThikness, bool bWireframe){
     vector<ofVboMesh> cells;
-    getCellsFromContainer(_con, _wallsThikness, cells);
+    getCellsFromContainer(_con, _wallsThikness, cells, bWireframe);
     return cells;
 }
 
-void getCellsFromContainer(voro::container &_con, vector<ofVboMesh>& cells, float _maxRadius){
+void getCellsFromContainer(voro::container &_con, vector<ofVboMesh>& cells, float _maxRadius, bool bWireframe){
     cells.clear();
 	
     voro::c_loop_all vl( _con );
@@ -148,7 +164,7 @@ void getCellsFromContainer(voro::container &_con, vector<ofVboMesh>& cells, floa
                 if(getCellRadius(c)<_maxRadius){
                     double *pp = _con.p[vl.ijk] + _con.ps * vl.q;
                     ofVboMesh cellMesh;
-                    getCellMesh(c, cellMesh);
+                    getCellMesh(c, cellMesh, bWireframe);
                     cells.push_back( cellMesh );
                 }
                 i++;
@@ -157,7 +173,7 @@ void getCellsFromContainer(voro::container &_con, vector<ofVboMesh>& cells, floa
     }
 }
 
-vector<ofVboMesh>  getCellsFromContainer(voro::container &_con, float _wallsThikness, float _maxRadius){
+vector<ofVboMesh>  getCellsFromContainer(voro::container &_con, float _wallsThikness, float _maxRadius, bool bWireframe){
     vector<ofVboMesh> cells;
     
     voro::c_loop_all vl( _con );
@@ -170,7 +186,7 @@ vector<ofVboMesh>  getCellsFromContainer(voro::container &_con, float _wallsThik
             } else {
                 if(getCellRadius(c)<_maxRadius){
                     double *pp = _con.p[vl.ijk] + _con.ps * vl.q;
-                    ofVboMesh cellMesh = getCellMesh(c, ofPoint(pp[0],pp[1],pp[2])*(float)(1.0+_wallsThikness) );
+                    ofVboMesh cellMesh = getCellMesh(c, ofPoint(pp[0],pp[1],pp[2])*(float)(1.0+_wallsThikness), bWireframe);
                     cells.push_back( cellMesh );
                 }
                 i++;
@@ -182,7 +198,7 @@ vector<ofVboMesh>  getCellsFromContainer(voro::container &_con, float _wallsThik
     return cells;
 }
 
-void getCellsFromContainer(voro::container &_con, vector<ofVboMesh>& cells){
+void getCellsFromContainer(voro::container &_con, vector<ofVboMesh>& cells, bool bWireframe){
     cells.clear();
 	
     voro::c_loop_all vl( _con );
@@ -196,7 +212,7 @@ void getCellsFromContainer(voro::container &_con, vector<ofVboMesh>& cells){
             } else {
                 double *pp = _con.p[vl.ijk] + _con.ps * vl.q;
 				ofVboMesh cellMesh;
-                getCellMesh(c, cellMesh);
+                getCellMesh(c, cellMesh, bWireframe);
                 cells.push_back( cellMesh );
                 i++;
             }
