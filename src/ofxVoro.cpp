@@ -93,6 +93,7 @@ void getCellMesh(voro::voronoicell &_c, ofPoint _pos, ofVboMesh& _mesh, bool bWi
 				
 				ofPoint normal = ((b - a).cross(c - a)).normalize() * -1.;
 				
+                
 				_mesh.addVertex(a);
 				_mesh.addNormal(normal);
 				
@@ -100,6 +101,19 @@ void getCellMesh(voro::voronoicell &_c, ofPoint _pos, ofVboMesh& _mesh, bool bWi
 				_mesh.addNormal(normal);
 				_mesh.addVertex(c);
 				_mesh.addNormal(normal);
+                
+                // add texture coordinates
+                if( i % 2 == 0) {
+                    _mesh.addTexCoord(ofVec2f(0.0, 0.0));
+                    _mesh.addTexCoord(ofVec2f(0.0, 1.0));
+                    _mesh.addTexCoord(ofVec2f(1.0, 0.0));
+                } else {
+                    _mesh.addTexCoord(ofVec2f(1.0, 0.0));
+                    _mesh.addTexCoord(ofVec2f(0.0, 1.0));
+                    _mesh.addTexCoord(ofVec2f(1.0, 1.0));
+                }
+                
+                
 			}
 		} else { // wireframe
 			_mesh.setMode(OF_PRIMITIVE_LINES);
